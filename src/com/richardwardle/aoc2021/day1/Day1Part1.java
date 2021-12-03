@@ -1,19 +1,18 @@
 package com.richardwardle.aoc2021.day1;
 
+import com.richardwardle.aoc2021.input.InputUtils;
+
 import java.io.FileNotFoundException;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Day1Part1 {
 
-    private static final String INPUT_FILE = "day1-input.txt";
     private final AtomicInteger result = new AtomicInteger(0);
 
     private void execute() throws FileNotFoundException {
-        try (Scanner scanner = new Scanner(
-                Objects.requireNonNull(this.getClass().getResourceAsStream(INPUT_FILE)))) {
+        try (Scanner scanner = InputUtils.day1Data()) {
             Optional<Integer> lastValue = Optional.empty();
             while (scanner.hasNext()) {
                 Integer currentValue = Integer.valueOf(scanner.nextLine());
