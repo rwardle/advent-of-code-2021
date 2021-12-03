@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Day1Part2 {
 
-    enum SlidingWindow {
+    private enum SlidingWindow {
         FIRST, SECOND, THIRD, FOURTH;
 
         private final AtomicInteger sum = new AtomicInteger(0);
