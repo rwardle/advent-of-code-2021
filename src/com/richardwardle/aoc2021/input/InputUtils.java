@@ -44,4 +44,12 @@ public interface InputUtils {
     static Scanner day4Example() {
         return fileScanner("day4-example.txt");
     }
+
+    static Scanner day5Data() {
+        return fileScanner("day5-data.txt");
+    }
+
+    static Scanner day5Example() {
+        return fileScanner("day5-example.txt");
+    }
 }
