@@ -11,6 +11,14 @@ public class Day1Part1 {
 
     private final AtomicInteger result = new AtomicInteger(0);
 
+    public static void main(String[] args) {
+        try {
+            new Day1Part1().execute();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void execute() throws FileNotFoundException {
         try (Scanner scanner = InputUtils.day1Data()) {
             Optional<Integer> lastValue = Optional.empty();
@@ -26,13 +34,5 @@ public class Day1Part1 {
         }
 
         System.out.println("Total: " + result);
-    }
-
-    public static void main(String[] args) {
-        try {
-            new Day1Part1().execute();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 }

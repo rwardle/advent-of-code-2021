@@ -10,24 +10,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Day6Part1 {
 
-    private static class Fish {
-
-        private final AtomicInteger timer;
-
-        Fish(int value) {
-            timer = new AtomicInteger(value);
-        }
-
-        boolean cycleTimer() {
-            if (timer.compareAndExchange(0, 6) == 0) {
-                return true;
-            } else {
-                timer.decrementAndGet();
-                return false;
-            }
-        }
-    }
-
     public static void main(String[] args) {
         new Day6Part1().execute();
     }
@@ -62,5 +44,23 @@ public class Day6Part1 {
         }
 
         throw new RuntimeException("Invalid data");
+    }
+
+    private static class Fish {
+
+        private final AtomicInteger timer;
+
+        Fish(int value) {
+            timer = new AtomicInteger(value);
+        }
+
+        boolean cycleTimer() {
+            if (timer.compareAndExchange(0, 6) == 0) {
+                return true;
+            } else {
+                timer.decrementAndGet();
+                return false;
+            }
+        }
     }
 }

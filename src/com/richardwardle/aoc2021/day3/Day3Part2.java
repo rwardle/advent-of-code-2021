@@ -10,6 +10,23 @@ import java.util.function.BiFunction;
 
 public class Day3Part2 {
 
+    public static void main(String[] args) {
+        new Day3Part2().execute();
+    }
+
+    private void execute() {
+        try (Scanner scanner = InputUtils.day3Data()) {
+            Report report = new Report();
+            while (scanner.hasNext()) {
+                String text = scanner.nextLine();
+                Line line = new Line(text);
+                report.addLine(line);
+            }
+
+            System.out.println("Life support rating: " + report.calculateLifeSupportRating());
+        }
+    }
+
     private enum MostCommonBit {
         ONE, ZERO, EQUAL
     }
@@ -97,22 +114,5 @@ public class Day3Part2 {
         int length() {
             return text.length();
         }
-    }
-
-    private void execute() {
-        try (Scanner scanner = InputUtils.day3Data()) {
-            Report report = new Report();
-            while (scanner.hasNext()) {
-                String text = scanner.nextLine();
-                Line line = new Line(text);
-                report.addLine(line);
-            }
-
-            System.out.println("Life support rating: " + report.calculateLifeSupportRating());
-        }
-    }
-
-    public static void main(String[] args) {
-        new Day3Part2().execute();
     }
 }

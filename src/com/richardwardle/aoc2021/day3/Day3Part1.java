@@ -8,6 +8,23 @@ import java.util.Scanner;
 
 public class Day3Part1 {
 
+    public static void main(String[] args) {
+        new Day3Part1().execute();
+    }
+
+    private void execute() {
+        try (Scanner scanner = InputUtils.day3Data()) {
+            Report report = new Report();
+            while (scanner.hasNext()) {
+                String text = scanner.nextLine();
+                Line line = new Line(text);
+                report.addLine(line);
+            }
+
+            System.out.println("Power consumption: " + report.calculatePowerConsumption());
+        }
+    }
+
     private static class Report {
 
         private final List<Line> lines = new ArrayList<>();
@@ -57,22 +74,5 @@ public class Day3Part1 {
         int length() {
             return text.length();
         }
-    }
-
-    private void execute() {
-        try (Scanner scanner = InputUtils.day3Data()) {
-            Report report = new Report();
-            while (scanner.hasNext()) {
-                String text = scanner.nextLine();
-                Line line = new Line(text);
-                report.addLine(line);
-            }
-
-            System.out.println("Power consumption: " + report.calculatePowerConsumption());
-        }
-    }
-
-    public static void main(String[] args) {
-        new Day3Part1().execute();
     }
 }

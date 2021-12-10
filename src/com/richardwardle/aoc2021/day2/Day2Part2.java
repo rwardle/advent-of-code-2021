@@ -6,13 +6,13 @@ import java.util.Scanner;
 
 public class Day2Part2 {
 
-    private enum Direction {
-        UP, DOWN, FORWARD
-    }
-
     private int horizontal = 0;
     private int depth = 0;
     private int aim = 0;
+
+    public static void main(String[] args) {
+        new Day2Part2().execute();
+    }
 
     private void execute() {
         try (Scanner scanner = InputUtils.day2Data()) {
@@ -37,7 +37,7 @@ public class Day2Part2 {
         System.out.println("Position: " + horizontal * depth);
     }
 
-    public static void main(String[] args) {
-        new Day2Part2().execute();
+    private enum Direction {
+        UP, DOWN, FORWARD
     }
 }
