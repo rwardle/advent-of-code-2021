@@ -6,9 +6,12 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class Day8 {
+public class Day8Part1 {
+
+    private static final List<Integer> UNIQUE_SEGMENT_LENGTHS = List.of(2, 3, 4, 7);
+
     public static void main(String[] args) {
-        new Day8().execute();
+        new Day8Part1().execute();
     }
 
     private static List<SignalEntry> readInput() {
@@ -31,35 +34,13 @@ public class Day8 {
     }
 
     private void execute() {
-        Map<Digit, Long> digitCount = readInput()
+        Map<Integer, Long> digitCount = readInput()
                 .stream()
                 .flatMap(signalEntry -> signalEntry.outputValues().stream())
-                .map(value -> Digit.lookup(value.length()))
-                .flatMap(Optional::stream)
+                .map(String::length)
+                .filter(UNIQUE_SEGMENT_LENGTHS::contains)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         System.out.println(digitCount.values().stream().mapToLong(count -> count).sum());
-    }
-
-    private enum Digit {
-        ONE(2), FOUR(4), SEVEN(3), EIGHT(7);
-
-        private static final Map<Integer, Digit> digitsBySegmentCount = new HashMap<>();
-
-        static {
-            for (Digit digit : Digit.values()) {
-                digitsBySegmentCount.put(digit.segmentCount, digit);
-            }
-        }
-
-        private final int segmentCount;
-
-        Digit(int segmentCount) {
-            this.segmentCount = segmentCount;
-        }
-
-        static Optional<Digit> lookup(int segmentCount) {
-            return Optional.ofNullable(digitsBySegmentCount.get(segmentCount));
-        }
     }
 
     private record SignalEntry(List<String> signalPatterns, List<String> outputValues) {
