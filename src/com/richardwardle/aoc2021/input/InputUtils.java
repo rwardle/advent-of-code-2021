@@ -76,4 +76,13 @@ public interface InputUtils {
     static Scanner day7Example() {
         return fileScanner("day7-example.txt");
     }
+
+    static Scanner day8Data() {
+        return fileScanner("day8-data.txt");
+    }
+
+    @SuppressWarnings("unused")
+    static Scanner day8Example() {
+        return fileScanner("day8-example.txt");
+    }
 }
