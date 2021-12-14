@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Day9 {
+import static com.richardwardle.aoc2021.day9.HeightMap.heightMapFrom;
+
+public class Day9Part1 {
     public static void main(String[] args) {
-        new Day9().execute();
+        new Day9Part1().execute();
     }
 
     private static List<String> readInput() {
@@ -23,7 +25,7 @@ public class Day9 {
 
     private void execute() {
         var lines = readInput();
-        var heightMap = buildHeightMap(lines);
+        var heightMap = heightMapFrom(lines);
         var lowPoints = heightMap.getLowPoints();
         var riskLevel = lowPoints
                 .stream()
@@ -31,17 +33,5 @@ public class Day9 {
                 .mapToLong(v -> v + 1)
                 .sum();
         System.out.println(riskLevel);
-    }
-
-    private HeightMap buildHeightMap(List<String> lines) {
-        var heightMap = new HeightMap();
-        for (int y = 0; y < lines.size(); y++) {
-            var heights = lines.get(y).split("");
-            for (int x = 0; x < heights.length; x++) {
-                var height = new HeightMap.Height(Integer.parseInt(heights[x]), new HeightMap.Position(x, y));
-                heightMap.addHeight(height);
-            }
-        }
-        return heightMap;
     }
 }

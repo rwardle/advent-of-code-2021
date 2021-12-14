@@ -1,9 +1,23 @@
 package com.richardwardle.aoc2021.day9;
 
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 class HeightMap {
     private final Map<Position, Height> heightMap = new HashMap<>();
+
+    static HeightMap heightMapFrom(List<String> lines) {
+        var heightMap = new HeightMap();
+        for (int y = 0; y < lines.size(); y++) {
+            var heights = lines.get(y).split("");
+            for (int x = 0; x < heights.length; x++) {
+                var height = new HeightMap.Height(Integer.parseInt(heights[x]), new HeightMap.Position(x, y));
+                heightMap.addHeight(height);
+            }
+        }
+        return heightMap;
+    }
 
     private static Position positionToLeft(Position position) {
         return new Position(position.x() - 1, position.y());
@@ -59,11 +73,44 @@ class HeightMap {
         return numberOfLowerOrEqualPositions == 0;
     }
 
-    @Override
-    public String toString() {
-        return "HeightMap{" +
-                "data=" + heightMap +
-                '}';
+    List<Set<Position>> getBasins() {
+        var maxX = heightMap.keySet().stream().mapToInt(Position::x).max().orElseThrow();
+        var maxY = heightMap.keySet().stream().mapToInt(Position::y).max().orElseThrow();
+        var heightNinePositions = heightMap
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().value() == 9)
+                .map(Map.Entry::getKey)
+                .toList();
+
+        Function<Position, Boolean> isValid = (position) -> position.x() >= 0
+                && position.x() <= maxX
+                && position.y() >= 0
+                && position.y() <= maxY;
+
+        var basins = new ArrayList<Set<Position>>();
+        for (Height lowPoint : getLowPoints()) {
+            var basinPositions = new HashSet<Position>();
+            var positionsToProcess = new Stack<Position>();
+            Consumer<Position> processPosition = position -> {
+                if (isValid.apply(position) && !heightNinePositions.contains(position)) {
+                    if (basinPositions.add(position)) {
+                        positionsToProcess.push(position);
+                    }
+                }
+            };
+
+            positionsToProcess.push(lowPoint.position());
+            while (!positionsToProcess.empty()) {
+                Position next = positionsToProcess.pop();
+                List.of(positionAbove(next), positionBelow(next), positionToLeft(next), positionToRight(next))
+                        .forEach(processPosition);
+            }
+
+            basins.add(basinPositions);
+        }
+
+        return basins;
     }
 
     record Position(int x, int y) {
