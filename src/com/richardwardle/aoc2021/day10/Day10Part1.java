@@ -4,9 +4,9 @@ import com.richardwardle.aoc2021.input.InputUtils;
 
 import java.util.*;
 
-public class Day10 {
+public class Day10Part1 {
     public static void main(String[] args) {
-        new Day10().execute();
+        new Day10Part1().execute();
     }
 
     private static List<String> readInput() {
@@ -50,9 +50,9 @@ public class Day10 {
         var lines = readInput();
         var score = lines.stream()
                 .map(String::toCharArray)
-                .map(Day10::processLine)
+                .map(Day10Part1::processLine)
                 .flatMap(Optional::stream)
-                .map(Day10::score)
+                .map(Day10Part1::score)
                 .mapToInt(i -> i)
                 .sum();
         System.out.println(score);
