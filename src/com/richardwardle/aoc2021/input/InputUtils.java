@@ -103,4 +103,13 @@ public interface InputUtils {
     static Scanner day10Example() {
         return fileScanner("day10-example.txt");
     }
+
+    static Scanner day11Data() {
+        return fileScanner("day11-data.txt");
+    }
+
+    @SuppressWarnings("unused")
+    static Scanner day11Example() {
+        return fileScanner("day11-example.txt");
+    }
 }
