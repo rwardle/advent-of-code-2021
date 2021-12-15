@@ -6,7 +6,6 @@ import com.richardwardle.aoc2021.input.InputUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.IntStream;
 
 public class Day11 {
     public static void main(String[] args) {
@@ -37,10 +36,14 @@ public class Day11 {
     private void execute() {
         var lines = readInput();
         var cave = parseInput(lines);
-        var result = IntStream.rangeClosed(1, 100)
-                .map(i -> cave.step())
-                .mapToLong(Long::valueOf)
-                .sum();
-        System.out.println(result);
+
+        var totalFlashes = 0;
+        var allFlashed = false;
+        for (int i = 1; !allFlashed; i++) {
+            int flashCount = cave.step();
+            allFlashed = flashCount == 100;
+            totalFlashes += flashCount;
+            System.out.printf("Total flashes after step %d: %d\n", i, totalFlashes);
+        }
     }
 }
