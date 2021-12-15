@@ -1,5 +1,6 @@
 package com.richardwardle.aoc2021.day5;
 
+import com.richardwardle.aoc2021.Point;
 import com.richardwardle.aoc2021.input.InputUtils;
 
 import java.util.ArrayList;

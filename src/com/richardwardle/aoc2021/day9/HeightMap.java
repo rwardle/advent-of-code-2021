@@ -1,52 +1,54 @@
 package com.richardwardle.aoc2021.day9;
 
+import com.richardwardle.aoc2021.Point;
+
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 class HeightMap {
-    private final Map<Position, Height> heightMap = new HashMap<>();
+    private final Map<Point, Height> heightMap = new HashMap<>();
 
     static HeightMap heightMapFrom(List<String> lines) {
         var heightMap = new HeightMap();
         for (int y = 0; y < lines.size(); y++) {
             var heights = lines.get(y).split("");
             for (int x = 0; x < heights.length; x++) {
-                var height = new HeightMap.Height(Integer.parseInt(heights[x]), new HeightMap.Position(x, y));
+                var height = new HeightMap.Height(Integer.parseInt(heights[x]), new Point(x, y));
                 heightMap.addHeight(height);
             }
         }
         return heightMap;
     }
 
-    private static Position positionToLeft(Position position) {
-        return new Position(position.x() - 1, position.y());
+    private static Point positionToLeft(Point point) {
+        return new Point(point.x() - 1, point.y());
     }
 
-    private static Position positionToRight(Position position) {
-        return new Position(position.x() + 1, position.y());
+    private static Point positionToRight(Point point) {
+        return new Point(point.x() + 1, point.y());
     }
 
-    private static Position positionAbove(Position position) {
-        return new Position(position.x(), position.y() - 1);
+    private static Point positionAbove(Point point) {
+        return new Point(point.x(), point.y() - 1);
     }
 
-    private static Position positionBelow(Position position) {
-        return new Position(position.x(), position.y() + 1);
+    private static Point positionBelow(Point point) {
+        return new Point(point.x(), point.y() + 1);
     }
 
     public void addHeight(Height height) {
-        heightMap.put(height.position(), height);
+        heightMap.put(height.point(), height);
     }
 
     public Set<Height> getLowPoints() {
-        var maxX = heightMap.keySet().stream().mapToInt(Position::x).max().orElseThrow();
-        var maxY = heightMap.keySet().stream().mapToInt(Position::y).max().orElseThrow();
+        var maxX = heightMap.keySet().stream().mapToInt(Point::x).max().orElseThrow();
+        var maxY = heightMap.keySet().stream().mapToInt(Point::y).max().orElseThrow();
 
         var lowPoints = new HashSet<Height>();
         for (int y = 0; y < maxY + 1; y++) {
             for (int x = 0; x < maxX + 1; x++) {
-                Height height = heightMap.get(new Position(x, y));
+                Height height = heightMap.get(new Point(x, y));
                 if (isLowPoint(height)) {
                     lowPoints.add(height);
                 }
@@ -57,7 +59,7 @@ class HeightMap {
     }
 
     private boolean isLowPoint(Height currentHeight) {
-        var currentPosition = currentHeight.position();
+        var currentPosition = currentHeight.point();
         var adjacentPositions = List.of(
                 positionToLeft(currentPosition),
                 positionToRight(currentPosition),
@@ -73,9 +75,9 @@ class HeightMap {
         return numberOfLowerOrEqualPositions == 0;
     }
 
-    List<Set<Position>> getBasins() {
-        var maxX = heightMap.keySet().stream().mapToInt(Position::x).max().orElseThrow();
-        var maxY = heightMap.keySet().stream().mapToInt(Position::y).max().orElseThrow();
+    List<Set<Point>> getBasins() {
+        var maxX = heightMap.keySet().stream().mapToInt(Point::x).max().orElseThrow();
+        var maxY = heightMap.keySet().stream().mapToInt(Point::y).max().orElseThrow();
         var heightNinePositions = heightMap
                 .entrySet()
                 .stream()
@@ -83,26 +85,26 @@ class HeightMap {
                 .map(Map.Entry::getKey)
                 .toList();
 
-        Function<Position, Boolean> isValid = (position) -> position.x() >= 0
-                && position.x() <= maxX
-                && position.y() >= 0
-                && position.y() <= maxY;
+        Function<Point, Boolean> isValid = (point) -> point.x() >= 0
+                && point.x() <= maxX
+                && point.y() >= 0
+                && point.y() <= maxY;
 
-        var basins = new ArrayList<Set<Position>>();
+        var basins = new ArrayList<Set<Point>>();
         for (Height lowPoint : getLowPoints()) {
-            var basinPositions = new HashSet<Position>();
-            var positionsToProcess = new Stack<Position>();
-            Consumer<Position> processPosition = position -> {
-                if (isValid.apply(position) && !heightNinePositions.contains(position)) {
-                    if (basinPositions.add(position)) {
-                        positionsToProcess.push(position);
+            var basinPositions = new HashSet<Point>();
+            var positionsToProcess = new Stack<Point>();
+            Consumer<Point> processPosition = point -> {
+                if (isValid.apply(point) && !heightNinePositions.contains(point)) {
+                    if (basinPositions.add(point)) {
+                        positionsToProcess.push(point);
                     }
                 }
             };
 
-            positionsToProcess.push(lowPoint.position());
+            positionsToProcess.push(lowPoint.point());
             while (!positionsToProcess.empty()) {
-                Position next = positionsToProcess.pop();
+                Point next = positionsToProcess.pop();
                 List.of(positionAbove(next), positionBelow(next), positionToLeft(next), positionToRight(next))
                         .forEach(processPosition);
             }
@@ -113,9 +115,6 @@ class HeightMap {
         return basins;
     }
 
-    record Position(int x, int y) {
-    }
-
-    record Height(int value, Position position) {
+    record Height(int value, Point point) {
     }
 }
