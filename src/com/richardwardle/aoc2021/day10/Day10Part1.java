@@ -51,9 +51,8 @@ public class Day10Part1 {
         var score = lines.stream()
                 .map(String::toCharArray)
                 .map(Day10Part1::processLine)
-                .flatMap(Optional::stream)
-                .map(Day10Part1::score)
-                .mapToInt(i -> i)
+                .mapMultiToInt((optionalChunk, mapper) -> optionalChunk
+                        .ifPresent(chunk -> mapper.accept(Day10Part1.score(chunk))))
                 .sum();
         System.out.println(score);
     }

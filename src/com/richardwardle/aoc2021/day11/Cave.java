@@ -59,8 +59,8 @@ public class Cave {
 
     private List<Point> getAdjacent(Set<Point> points) {
         return points.stream()
-                .flatMap(point -> point.adjacentPoints().stream())
-                .collect(Collectors.toList());
+                .<Point>mapMulti((point, mapper) -> point.adjacentPoints().forEach(mapper))
+                .toList();
     }
 
     @Override

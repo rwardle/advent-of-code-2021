@@ -3,6 +3,7 @@ package com.richardwardle.aoc2021.day8;
 import com.richardwardle.aoc2021.input.InputUtils;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -33,12 +34,19 @@ public class Day8Part1 {
         return new SignalEntry(signalPatterns, outPutValues);
     }
 
+    private static void outputValuesWithUniqueSegmentLength(SignalEntry entry, Consumer<Integer> mapper) {
+        for (String outputValue : entry.outputValues()) {
+            int length = outputValue.length();
+            if (UNIQUE_SEGMENT_LENGTHS.contains(length)) {
+                mapper.accept(length);
+            }
+        }
+    }
+
     private void execute() {
         Map<Integer, Long> digitCount = readInput()
                 .stream()
-                .flatMap(signalEntry -> signalEntry.outputValues().stream())
-                .map(String::length)
-                .filter(UNIQUE_SEGMENT_LENGTHS::contains)
+                .mapMulti(Day8Part1::outputValuesWithUniqueSegmentLength)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         System.out.println(digitCount.values().stream().mapToLong(count -> count).sum());
     }

@@ -18,7 +18,7 @@ public class Day5 {
         var points = parseInput()
                 .stream()
 //                .filter(s -> s.isHorizontal() || s.isVertical())
-                .flatMap(s -> s.pointsOnLine().stream())
+                .mapMulti((segment, mapper) -> segment.pointsOnLine().forEach(mapper))
                 .collect(Collectors.groupingBy(point -> point, Collectors.counting()));
         System.out.println(points.values().stream().filter(count -> count > 1).count());
     }
