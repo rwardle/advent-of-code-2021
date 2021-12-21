@@ -2,7 +2,7 @@ package com.richardwardle.aoc2021.day10;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Objects;
 
 enum Chunk {
     ANGLE('<', '>'), BRACE('{', '}'), ROUND('(', ')'), SQUARE('[', ']');
@@ -26,9 +26,7 @@ enum Chunk {
     }
 
     static Chunk lookup(char c) {
-        return Optional
-                .ofNullable(opening.get(c))
-                .orElse(closing.get(c));
+        return Objects.requireNonNullElseGet(opening.get(c), () -> closing.get(c));
     }
 
     static boolean isClosing(char c) {

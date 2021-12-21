@@ -14,7 +14,7 @@ public class Day6Part2 {
 
     private void execute() {
         var fishData = new HashMap<>(getFishData());
-        Function<Integer, Long> getFishCount = index -> Optional.ofNullable(fishData.get(index)).orElse(0L);
+        Function<Integer, Long> getFishCount = index -> Objects.requireNonNullElse(fishData.get(index), 0L);
 
         for (int i = 0; i < 256; i++) {
             var newFishCount = getFishCount.apply(0);
