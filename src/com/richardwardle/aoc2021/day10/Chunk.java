@@ -11,7 +11,8 @@ enum Chunk {
     private final static Map<Character, Chunk> closing = new HashMap<>();
 
     static {
-        for (Chunk chunk : Chunk.values()) {
+        Chunk[] values = Chunk.values();
+        for (Chunk chunk : values) {
             opening.put(chunk.open, chunk);
             closing.put(chunk.close, chunk);
         }

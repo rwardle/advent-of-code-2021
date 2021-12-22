@@ -26,7 +26,7 @@ public class Day1Part2 {
                 Integer currentValue = Integer.valueOf(scanner.nextLine());
 
                 // Update sliding window sums
-                for (SlidingWindow slidingWindow : SlidingWindow.values()) {
+                for (SlidingWindow slidingWindow : SlidingWindow.VALUES) {
                     slidingWindow.update(lineIndex, currentValue);
                 }
 
@@ -55,9 +55,10 @@ public class Day1Part2 {
     private enum SlidingWindow {
         FIRST, SECOND, THIRD, FOURTH;
 
+        static final SlidingWindow[] VALUES = SlidingWindow.values();
         private final AtomicInteger sum = new AtomicInteger(0);
 
-        public static int getSumAndReset(int lineIndex) {
+        static int getSumAndReset(int lineIndex) {
             int remainder = lineIndex % SlidingWindow.values().length;
             SlidingWindow slidingWindow = SlidingWindow.values()[remainder];
             return slidingWindow.sum.getAndSet(0);
